@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:widget="http://www.netvibes.com/ns/">
+    <head>
+        <title>Last.fm</title>
+        <meta name="author" content="Mickael BLATIERE" />
+        <link rel="icon" href="http://cdn.last.fm/flatness/favicon.2.ico" />
+        <link rel="stylesheet" type="text/css" href="http://uwa.netvibes.com/lib/c/UWA/assets/css/standalone.css" />
+        <script type="text/javascript" src="http://uwa.netvibes.com/lib/c/UWA/js/UWA_Standalone_Alone.js"></script>
+
+        <style>
+            #LastFM {
+                background: #E3E3E3;
+                padding: 5px;
+                color: #1B1B1B;
+                font-family: "Lucida Grande",Arial,Helvetica,Verdana,sans-serif;
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+            #LastFM .header {
+                background: transparent url(http://cdn.last.fm/flatness/header/red_left.png) no-repeat top left;
+                height: 67px;
+                margin-bottom: 10px;
+            }
+
+            #LastFM .header .logo {
+                background: transparent url(http://cdn.last.fm/flatness/logo.6.png) no-repeat 10px 10px;
+                width: 115px;
+                height: 67px;
+                float: left;
+            }
+
+            #LastFM .header .title {
+                background: transparent url(http://cdn.last.fm/flatness/header/red_right.png) repeat-x top right;
+                height: 40px;
+                margin-left: 115px;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: right;
+                padding-top: 27px;
+                padding-right: 20px;
+                color: #FFF;
+            }
+
+            #LastFM .header .title a,
+            #LastFM .header .title a:hover {
+                color: #FFF;
+            }
+
+            #LastFM .header-black {
+                background: transparent url(http://cdn.last.fm/flatness/header/black_left.2.png) no-repeat top left;
+            }
+
+            #LastFM .header-black .logo {
+                background: transparent url(http://cdn.last.fm/flatness/logo_black.3.png) no-repeat 10px 10px;
+            }
+
+            #LastFM .header-black .title {
+                background: transparent url(http://cdn.last.fm/flatness/header/black_right.2.png) repeat-x top right;
+            }
+
+
+            #LastFM .nv-tabSet .nv-tabList {
+                float: left;
+                width: 102px;
+                border-top: 1px solid #CCC;
+            }
+
+            #LastFM .nv-tabSet .nv-tabList .tab a {
+                width: 90px;
+                background: #EDEDED url(http://cdn.last.fm/flatness/secondary_nav_bg.png) repeat-x;
+                color: #696969;
+                border: 1px solid #CCC;
+                border-top: none;
+                margin-right: 0px;
+                font-weight: normal;
+            }
+
+            #LastFM .nv-tabSet .nv-tabList .selected a,
+            #LastFM .nv-tabSet .nv-tabList .tab a:hover {
+                color: #D51007;
+                background: #FFF;
+                text-decoration: none;
+            }
+
+            #LastFM .nv-tabSet .nv-tabList .selected a {
+                border-right: none;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent {
+                clear: none;
+                /*margin-left: 100px;*/
+                border: 1px solid #CCC;
+                border-bottom: none;
+                min-height: 180px;
+                width: auto;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item {
+                background: #FFF;
+                border-bottom: 1px solid #CCC;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList div.item:hover {
+                background: #BFDFF4;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item .description {
+                color: #999;
+                font-size: 11px;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3,
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item .description {
+                margin-left: 0px;
+            }
+
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3 a,
+            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3 {
+                color: #000;
+                font-weight: normal;
+            }
+
+            #LastFM .paging {
+                background: #FFF;
+                margin-left: 102px;
+                border: 1px solid #CCC;
+                border-top: none;
+            }
+
+            #LastFM .paging .nv-pager {
+                padding: 5px;
+                padding-top: 0px;
+            }
+
+            #LastFM .paging .nv-pager a,
+            #LastFM .paging .nv-pager a:hover {
+                color: #696969;
+                font-size: 11px;
+            }
+
+            #LastFM a:hover {
+                color: #0187C5;
+                text-decoration: underline;
+            }
+
+            #LastFM a {
+                border: none;
+            }
+
+        </style>
+
+        <widget:preferences>
+            <preference name="username" type="text" label="Username" defaultValue="" />
+            <preference name="events" type="boolean" label="Show events" defaultValue="true" />
+            <preference name="friends" type="boolean" label="Show friends" defaultValue="true" />
+            <preference name="neighbours" type="boolean" label="Show neighbours" defaultValue="false" />
+            <preference name="shouts" type="boolean" label="Show shouts" defaultValue="true" />
+            <preference name="top" type="boolean" label="Show top" defaultValue="true" />
+            <preference name="charts" type="boolean" label="Show weekly charts" defaultValue="false" />
+            <preference name="activeTab" type="hidden" label="" />
+            <preference name="limit" type="range" label="Number of items to display" defaultValue="5" step="1" min="1" max="10" />
+            <preference name="offset" type="hidden" label="" />
+            <preference name="color" type="list" label="Paint it" defaultValue="red">
+                <option value="red" label="Red" />
+                <option value="black" label="Black" />
+            </preference>
+        </widget:preferences>
+
+        <script type="text/javascript">
+
+            var LastFM = { };
+
+            LastFM.apiUrl = "http://ws.audioscrobbler.com/2.0/";
+            LastFM.apiKey = "b25b959554ed76058ac220b7b2e0a026";
+
+            LastFM.tabList = ["Recent tracks", "Events", "Past events", "Friends", "Neighbours", "Shouts", "Top artists", "Top albums", "Top tracks", "Artist chart", "Album chart", "Track chart"];
+            LastFM.methodList = ['user.getrecenttracks', 'user.getevents', 'user.getpastevents', 'user.getfriends', 'user.getneighbours', 'user.getshouts', 'user.gettopartists', 'user.gettopalbums', 'user.gettoptracks', 'user.getweeklyartistchart', 'user.getweeklyalbumchart', 'user.getweeklytrackchart'];
+            LastFM.tagList = ['track', 'event', 'event', 'user', 'user', 'shout', 'artist', 'album', 'track', 'artist', 'album', 'track'];
+            LastFM.tabView = [null, 'events', 'events', 'friends', 'neighbours', 'shouts', 'top', 'top', 'top', 'charts', 'charts', 'charts'];
+
+            LastFM.init = function() {
+                var activeTab = widget.getValue('activeTab');
+                // build tabview
+                var tabs = new UWA.Controls.TabView();
+                for (var i = 0; i < LastFM.tabList.length; i++) {
+                    var view = LastFM.tabView[i];
+                    if (view == null || widget.getBool(view) == true) {
+                        var tab = LastFM.tabList[i];
+                        tabs.addTab(tab, {text: tab});
+                    } else if (activeTab == LastFM.tabList[i]) {
+                        activeTab = null;
+                    }
+                }
+
+                // select active tab
+                if (LastFM.tabList.indexOf(activeTab) == -1) {
+                    activeTab = LastFM.tabList[0];
+                }
+                tabs.selectTab(activeTab);
+
+                // add event
+                tabs.observe('activeTabChange', LastFM.changeTab);
+
+                // build skeleton
+                var main = widget.createElement('div', {'id': 'LastFM'});
+                var header = widget.createElement('div', {'class': 'header header-' + widget.getValue('color')});
+                header.inject(main);
+                widget.createElement('div', {'class': 'logo'}).inject(header);
+                title = widget.createElement('div', {'class': 'title'});
+                var username = widget.getValue('username');
+                if (username) {
+                    var link = widget.createElement('a', { 'href': 'http://lastfm.fr/user/' + username });
+                    link.innerHTML = username;
+                    link.inject(title);
+                    widget.setTitle('Last.fm - ' + username);
+                }
+                title.inject(header);
+                tabs.appendTo(main);
+                LastFM.paging = widget.createElement('div', {'class': 'paging'});
+                LastFM.paging.inject(main);
+                widget.setBody('');
+                main.inject(widget.body);
+                widget.body.style.padding = "0px";
+
+                // load active tab
+                LastFM.loadTab(activeTab);
+            }
+
+            LastFM.loadTab = function(tabName) {
+                var tabs = LastFM.tabs;
+
+                // save active tab
+                widget.setValue('activeTab', tabName);
+
+                // check username
+                var username = widget.getValue('username');
+                if (!username) {
+                    var error = widget.createElement('div', {'class': 'error'});
+                    error.innerHTML = _("Please edit widget and enter your username.");
+                    LastFM.tabs.setContent(tabName, error);
+                } else {
+                    // get feed
+                    var url = LastFM.apiUrl + "?method=" + LastFM.methodList[LastFM.tabList.indexOf(tabName)] + "&user=" + username + "&api_key=" + LastFM.apiKey;
+                    UWA.Data.getXml(url, LastFM.display); 
+                }
+            }
+
+            LastFM.display = function(xml) {
+                var limit = widget.getInt('limit');
+                var offset = widget.getInt('offset');
+                var activeTab = widget.getValue('activeTab');
+                var imageSize = 0;
+
+                var errorResponse = xml.getElementsByTagName('error');
+                if (errorResponse && errorResponse.length > 0) {
+                    var error = widget.createElement('div', {'class': 'error'});
+                    error.innerHTML = _("Error: ") + errorResponse[0].firstChild.nodeValue;
+                    LastFM.tabs.setContent(activeTab, error);
+                    return;
+                }
+
+                var resultList = widget.createElement('div', {'class': 'nv-thumbnailedList'});  //richList
+
+                var items = xml.getElementsByTagName(LastFM.tagList[LastFM.tabList.indexOf(activeTab)]);
+                LastFM.xml = items;
+
+                if (items.length == 0) {
+                    var error = widget.createElement('div', {'class': 'error'});
+                    error.innerHTML = _("No results found.");
+                    LastFM.tabs.setContent(activeTab, error);
+                    return;
+                }
+
+                for (var i = offset; i < items.length && i < limit + offset; i++) {
+
+                    var item = items[i];
+                    //if (item instanceof Element) {
+
+                    var result = widget.createElement('div', {'class': 'item ' + (i % 2 == 0 ? 'even' : 'odd')});
+
+                    switch (item.tagName) {
+
+                        case 'track':
+                            if (item.getElementsByTagName("artist")[0].getElementsByTagName("name")[0]) {
+                                var title = item.getElementsByTagName("artist")[0].getElementsByTagName("name")[0].firstChild.nodeValue;
+                            } else {
+                                var title = item.getElementsByTagName("artist")[0].firstChild.nodeValue;
+                            }
+                            title += ' - ' + item.getElementsByTagName("name")[0].firstChild.nodeValue;
+                            if (item.getElementsByTagName("date")[0]) {
+                                var description = LastFM.timeAgo(item.getElementsByTagName("date")[0].firstChild.nodeValue);
+                            } else if (item.getElementsByTagName("playcount")[0]) {
+                                var description =  _("Playcount: ") + item.getElementsByTagName("playcount")[0].firstChild.nodeValue;
+                            } else {
+                                var description = '';
+                            }
+                            break;
+
+                        case 'user':
+                            var title = item.getElementsByTagName("name")[0].firstChild.nodeValue;
+                            if (item.getElementsByTagName("realname")[0] && item.getElementsByTagName("realname")[0].firstChild) {
+                                var description = item.getElementsByTagName("realname")[0].firstChild.nodeValue;
+                            } else if (item.getElementsByTagName("match")[0] && item.getElementsByTagName("match")[0].firstChild) {
+                                var description = _("Match: ") + Math.round(item.getElementsByTagName("match")[0].firstChild.nodeValue*100)/100 + '%';
+                            } else {
+                                var description = '';
+                            }
+                            break;
+
+                        case 'event':
+                            var title = item.getElementsByTagName("title")[0].firstChild.nodeValue;
+                            var date = new Date(item.getElementsByTagName("startDate")[0].firstChild.nodeValue);
+                            var description = date.getDate() + '/' + (date.getMonth() + 1) + '/' + (date.getYear() + 1900);
+                            description += ' - ' + item.getElementsByTagName("venue")[0].getElementsByTagName("name")[0].firstChild.nodeValue;
+                            description += ', ' + item.getElementsByTagName("venue")[0].getElementsByTagName("city")[0].firstChild.nodeValue;
+                            break;
+
+                        case 'shout':
+                            var title = item.getElementsByTagName("author")[0].firstChild.nodeValue;
+                            title += ' - ' + LastFM.timeAgo(item.getElementsByTagName("date")[0].firstChild.nodeValue);
+                            var description = item.getElementsByTagName("body")[0].firstChild.nodeValue;
+                            break;
+
+                        case 'artist':
+                             var title = item.getElementsByTagName("name")[0].firstChild.nodeValue;
+                             var description = _("Playcount: ") + item.getElementsByTagName("playcount")[0].firstChild.nodeValue;
+                             break;
+
+                        case 'album':
+                             if (item.getElementsByTagName("name")[1]) {
+                                 var title = item.getElementsByTagName("name")[1].firstChild.nodeValue;
+                             } else {
+                                 var title = item.getElementsByTagName("artist")[0].firstChild.nodeValue;
+                             }
+                             title += ' - ' + item.getElementsByTagName("name")[0].firstChild.nodeValue
+                             var description = _("Playcount: ") + item.getElementsByTagName("playcount")[0].firstChild.nodeValue;
+                             break;
+
+                    }
+
+                    if (item.getElementsByTagName("image")[imageSize] && item.getElementsByTagName("image")[imageSize].firstChild) {
+                        var image = item.getElementsByTagName("image")[imageSize].firstChild.nodeValue;
+                    } else if (item.getElementsByTagName("image").firstChild) {
+                        var image = item.getElementsByTagName("image").firstChild.nodeValue;
+                    } else {
+                        var image = '';
+                    }
+
+                    if (item.getElementsByTagName("url")[0]) {
+                        var url = item.getElementsByTagName("url")[0].firstChild.nodeValue;
+                    } else {
+                        var url = '';
+                    }
+
+                    if (image) {
+                        var thumbnail = widget.createElement('a', { 'href': url, 'class': 'thumbnail', 'title': title});
+                        widget.createElement('img', { 'src': image, 'width': '34px' }).inject(thumbnail);
+                        result.appendChild(thumbnail);
+                    }
+
+                    var header = widget.createElement('h3');
+                    if (url) {
+                        var headerLink = widget.createElement('a', { 'href': url, 'title': title});
+                        headerLink.innerHTML = title;
+                        headerLink.inject(header);
+                    } else {
+                        header.innerHTML = title;
+                    }
+                    result.appendChild(header);
+
+                    var content = widget.createElement('p', {'class': 'description'});
+                    content.innerHTML = description;
+                    result.appendChild(content);
+
+                    resultList.appendChild(result);
+
+                    //}
+                }
+
+                // add content
+                LastFM.tabs.setContent(activeTab, resultList);
+
+                // add paging
+                LastFM.addPaging();
+
+                widget.callback('onUpdateBody');
+            }
+
+            LastFM.addPaging = function() {
+                // build pager
+                var pager = new UWA.Controls.Pager(
+                    {
+                        module: widget,
+                        limit: widget.getInt('limit'),
+                        offset: widget.getInt('offset'),
+                        dataArray: LastFM.xml // FIX
+                    }
+                );
+
+                // display next and previous button
+                LastFM.paging.setContent(pager.getContent());
+
+                // event
+                pager.onChange = function(offset) {
+                    widget.setValue('offset', offset);
+                    LastFM.loadTab(widget.getValue('activeTab'));
+                }
+            }
+
+            LastFM.changeTab = function(tabName) {
+                widget.setValue('offset', '0');
+                LastFM.loadTab(tabName);
+            }
+
+            LastFM.timeAgo = function(ago) {
+                var dateAgo = new Date(ago + ' GMT+0000');
+                var now = new Date();
+
+                var diff = (Date.parse(now) - Date.parse(dateAgo)) / 1000;
+
+                if (diff < 60) return diff + _(" seconds ago");
+                if (diff < 60 * 60) return Math.round(diff / 60) + _(" minutes ago");
+                if (diff < 60 * 60 * 24) return Math.round(diff / 60 / 60) + _(" hours ago");
+                if (diff < 60 * 60 * 24 * 2) return _("Yesterday");
+                if (diff < 60 * 60 * 24 * 7) return _("Last week");
+                return dateAgo.getDate() + '/' + (dateAgo.getMonth() + 1) + '/' + (dateAgo.getYear() + 1900);
+            }
+
+            widget.onLoad = function() {
+                widget.setValue('offset', '0');
+                LastFM.init();
+            }
+
+            widget.onRefresh = function() {
+                widget.setValue('offset', '0');
+                LastFM.init();
+            }
+
+        </script>
+      </head>
+      <body>
+        <p>Loading...</p>
+      </body>
+</html>
