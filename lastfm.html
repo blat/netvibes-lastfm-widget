@@ -245,7 +245,6 @@
                 if (!username) {
                     var error = widget.createElement('div', {'class': 'error'});
                     error.innerHTML = _("Please edit widget and enter your username.");
-                    console.log(LastFM.tabs);
                     LastFM.tabs.setContent(tabName, error);
                 } else {
                     // get feed
