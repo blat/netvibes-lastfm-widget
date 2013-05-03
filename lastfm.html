@@ -11,7 +11,7 @@
         <style>
             #LastFM {
                 background: #E3E3E3;
-                padding: 5px;
+                padding: 10px;
                 color: #1B1B1B;
                 font-family: "Lucida Grande",Arial,Helvetica,Verdana,sans-serif;
                 font-size: 12px;
@@ -61,13 +61,17 @@
             }
 
 
-            #LastFM .nv-tabSet .nv-tabList {
-                float: left;
-                width: 102px;
+            #LastFM .uwa-tabview .uwa-tablist {
+                position: absolute;
+                width: 106px;
                 border-top: 1px solid #CCC;
             }
 
-            #LastFM .nv-tabSet .nv-tabList .tab a {
+            #LastFM .uwa-tabview .uwa-tablist .uwa-tab {
+                margin: 0 1px 0;
+            }
+
+            #LastFM .uwa-tabview .uwa-tablist .uwa-tab a {
                 width: 90px;
                 background: #EDEDED url(http://cdn.last.fm/flatness/secondary_nav_bg.png) repeat-x;
                 color: #696969;
@@ -77,54 +81,55 @@
                 font-weight: normal;
             }
 
-            #LastFM .nv-tabSet .nv-tabList .selected a,
-            #LastFM .nv-tabSet .nv-tabList .tab a:hover {
+            #LastFM .uwa-tabview .uwa-tablist .selected a,
+            #LastFM .uwa-tabview .uwa-tablist .uwa-tab a:hover {
                 color: #D51007;
                 background: #FFF;
                 text-decoration: none;
             }
 
-            #LastFM .nv-tabSet .nv-tabList .selected a {
+            #LastFM .uwa-tabview .uwa-tablist .selected a {
                 border-right: none;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent {
+            #LastFM .uwa-tabview .uwa-tabview-panel {
                 clear: none;
-                /*margin-left: 100px;*/
-                border: 1px solid #CCC;
-                border-bottom: none;
-                min-height: 180px;
-                width: auto;
+                margin-left: 109px;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item {
+            #LastFM .uwa-tabview .uwa-tab-panel {
+                min-height: 250px;
+                border-bottom: none;
+            }
+
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item {
                 background: #FFF;
                 border-bottom: 1px solid #CCC;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList div.item:hover {
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList div.item:hover {
                 background: #BFDFF4;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item .description {
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item .description {
                 color: #999;
                 font-size: 11px;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3,
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item .description {
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item h3,
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item .description {
                 margin-left: 0px;
             }
 
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3 a,
-            #LastFM .nv-tabSet .nv-tabContent .nv-thumbnailedList .item h3 {
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item h3 a,
+            #LastFM .uwa-tabview .uwa-tabview-panel .nv-thumbnailedList .item h3 {
                 color: #000;
                 font-weight: normal;
             }
 
             #LastFM .paging {
                 background: #FFF;
-                margin-left: 102px;
+                margin-left: 109px;
                 border: 1px solid #CCC;
                 border-top: none;
             }
@@ -173,7 +178,7 @@
             var LastFM = { };
 
             LastFM.apiUrl = "http://ws.audioscrobbler.com/2.0/";
-            LastFM.apiKey = "b25b959554ed76058ac220b7b2e0a026";
+            LastFM.apiKey = "ae28e60e4e3c330bd238cb2b221696d8";
 
             LastFM.tabList = ["Recent tracks", "Events", "Past events", "Friends", "Neighbours", "Shouts", "Top artists", "Top albums", "Top tracks", "Artist chart", "Album chart", "Track chart"];
             LastFM.methodList = ['user.getrecenttracks', 'user.getevents', 'user.getpastevents', 'user.getfriends', 'user.getneighbours', 'user.getshouts', 'user.gettopartists', 'user.gettopalbums', 'user.gettoptracks', 'user.getweeklyartistchart', 'user.getweeklyalbumchart', 'user.getweeklytrackchart'];
@@ -193,6 +198,7 @@
                         activeTab = null;
                     }
                 }
+                LastFM.tabs = tabs;
 
                 // select active tab
                 if (LastFM.tabList.indexOf(activeTab) == -1) {
@@ -201,7 +207,7 @@
                 tabs.selectTab(activeTab);
 
                 // add event
-                tabs.observe('activeTabChange', LastFM.changeTab);
+                tabs.addEvent('activeTabChange', LastFM.changeTab);
 
                 // build skeleton
                 var main = widget.createElement('div', {'id': 'LastFM'});
@@ -217,7 +223,7 @@
                     widget.setTitle('Last.fm - ' + username);
                 }
                 title.inject(header);
-                tabs.appendTo(main);
+                tabs.inject(main);
                 LastFM.paging = widget.createElement('div', {'class': 'paging'});
                 LastFM.paging.inject(main);
                 widget.setBody('');
@@ -239,6 +245,7 @@
                 if (!username) {
                     var error = widget.createElement('div', {'class': 'error'});
                     error.innerHTML = _("Please edit widget and enter your username.");
+                    console.log(LastFM.tabs);
                     LastFM.tabs.setContent(tabName, error);
                 } else {
                     // get feed
